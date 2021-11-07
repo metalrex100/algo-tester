@@ -32,8 +32,8 @@ func TestRunTestsWithMissingDirWithTestData(t *testing.T) {
 	assert.Error(t, err)
 }
 
-func TestGetTestCaseIOData(t *testing.T) {
-	testData := []struct {
+func TestGetTaskIOTestData(t *testing.T) {
+	data := []struct {
 		testNumber int
 		inputData  []string
 		outputData string
@@ -44,17 +44,17 @@ func TestGetTestCaseIOData(t *testing.T) {
 
 	ast := assert.New(t)
 
-	for _, data := range testData {
-		inputData, outputData, err := getTestCaseIOData(data.testNumber, getDirWithTestData())
+	for _, d := range data {
+		inputData, outputData, err := getTaskIOTestData(d.testNumber, getDirWithTestData())
 
-		ast.Equal(data.inputData, inputData)
-		ast.Equal(data.outputData, outputData)
+		ast.Equal(d.inputData, inputData)
+		ast.Equal(d.outputData, outputData)
 		ast.NoError(err)
 	}
 }
 
-func TestGetTestCaseIODataForTestWithNoIOData(t *testing.T) {
-	inputData, outputData, err := getTestCaseIOData(3, getDirWithTestData())
+func TestGetTaskIOTestDataForTaskWithNoIOData(t *testing.T) {
+	inputData, outputData, err := getTaskIOTestData(3, getDirWithTestData())
 
 	ast := assert.New(t)
 

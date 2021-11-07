@@ -17,16 +17,16 @@ const (
 	outputFileTemplate = "%s/test.%d.out.txt"
 )
 
-type TestCase func(data []string) string
+type Task func(data []string) string
 
-func RunTests(t *testing.T, testCase TestCase, pathToDirWithIOData string) error {
+func RunTests(t *testing.T, task Task, pathToDirWithIOData string) error {
 	if err := checkIfDirWithIODataExists(pathToDirWithIOData); err != nil {
 		return err
 	}
 
 	testNumber := 1
 	for {
-		inputData, outputData, err := getTestCaseIOData(testNumber, pathToDirWithIOData)
+		inputData, outputData, err := getTaskIOTestData(testNumber, pathToDirWithIOData)
 		if errors.Is(err, inputFileNotFoundErr) {
 			fmt.Println(">> No more test data, finishing..")
 			break
@@ -35,7 +35,7 @@ func RunTests(t *testing.T, testCase TestCase, pathToDirWithIOData string) error
 			return errors.Wrap(err, "get test case io data")
 		}
 
-		testPassed, testDuration := runTestCase(t, testCase, inputData, outputData)
+		testPassed, testDuration := runTest(t, task, inputData, outputData)
 
 		fmt.Printf(">> Test #%d passed: %t, test duration: %d ms\n\n", testNumber, testPassed, testDuration.Milliseconds())
 
@@ -45,10 +45,10 @@ func RunTests(t *testing.T, testCase TestCase, pathToDirWithIOData string) error
 	return nil
 }
 
-func runTestCase(t *testing.T, testCase TestCase, inputData []string, expected string) (bool, time.Duration) {
+func runTest(t *testing.T, task Task, inputData []string, expected string) (bool, time.Duration) {
 	testStartedAt := time.Now()
 
-	result := testCase(inputData)
+	result := task(inputData)
 
 	testFinishedAt := time.Now()
 
@@ -60,7 +60,7 @@ func checkIfDirWithIODataExists(pathToDirWithIOData string) error {
 	return err
 }
 
-func getTestCaseIOData(testNumber int, pathToDirWithIOData string) ([]string, string, error) {
+func getTaskIOTestData(testNumber int, pathToDirWithIOData string) ([]string, string, error) {
 	pathToInputFile := fmt.Sprintf(inputFileTemplate, pathToDirWithIOData, testNumber)
 	pathToOutputFile := fmt.Sprintf(outputFileTemplate, pathToDirWithIOData, testNumber)
 
