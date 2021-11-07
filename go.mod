@@ -1,4 +1,4 @@
-module algo-tester
+module github.com/metalrex100/algo-tester
 
 go 1.17
 
