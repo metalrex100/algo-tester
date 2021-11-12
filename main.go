@@ -24,7 +24,7 @@ func RunTests(t *testing.T, task Task, pathToDirWithIOData string) error {
 		return err
 	}
 
-	testNumber := 1
+	testNumber := 0
 	for {
 		inputData, outputData, err := getTaskIOTestData(testNumber, pathToDirWithIOData)
 		if errors.Is(err, inputFileNotFoundErr) {
