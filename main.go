@@ -13,8 +13,8 @@ import (
 var inputFileNotFoundErr = errors.New("input file not found")
 
 const (
-	inputFileTemplate = "%s/test.%d.in.txt"
-	outputFileTemplate = "%s/test.%d.out.txt"
+	inputFileTemplate = "%s/test.%d.in"
+	outputFileTemplate = "%s/test.%d.out"
 )
 
 type Task func(data []string) string
