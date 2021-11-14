@@ -35,7 +35,9 @@ func RunTests(t *testing.T, task Task, pathToDirWithIOData string) error {
 			return errors.Wrap(err, "get test case io data")
 		}
 
-		testPassed, testDuration := runTest(t, task, inputData, outputData)
+
+
+		testPassed, testDuration := runTest(t, task, trimInputData(inputData), outputData)
 
 		fmt.Printf(">> Test #%d passed: %t, test duration: %d ms\n\n", testNumber, testPassed, testDuration.Milliseconds())
 
@@ -81,4 +83,14 @@ func getTaskIOTestData(testNumber int, pathToDirWithIOData string) ([]string, st
 	}
 
 	return strings.Split(string(inputData), "\n"), string(outputData), nil
+}
+
+func trimInputData(data []string) []string {
+	trimmed := make([]string, 0, len(data))
+
+	for _, d := range data {
+		trimmed = append(trimmed, strings.Trim(d, "\n\r"))
+	}
+
+	return trimmed
 }
