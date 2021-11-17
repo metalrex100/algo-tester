@@ -54,7 +54,7 @@ func runTest(t *testing.T, task Task, inputData []string, expected string) (bool
 
 	testFinishedAt := time.Now()
 
-	return assert.Equal(t, expected, result), testStartedAt.Sub(testFinishedAt)
+	return assert.Equal(t, expected, result), testFinishedAt.Sub(testStartedAt)
 }
 
 func checkIfDirWithIODataExists(pathToDirWithIOData string) error {
